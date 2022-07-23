@@ -4,6 +4,7 @@
 
 using MMICoSimulation;
 using MMICSharp.Common.Communication;
+using MMICSharp.MMICSharp_Core.MMICore.Common.Tools;
 using MMIStandard;
 using MMIUnity.TargetEngine.Scene;
 using System;
@@ -125,8 +126,7 @@ namespace MMIUnity.TargetEngine
 
         #endregion
 
-
- 
+        private static TimeProfiler timeProfiler = TimeProfiler.GetProfiler("SimulationControllerLog", "SceneTransfer");
 
         // Use this for initialization
         protected virtual void Start()
@@ -141,6 +141,8 @@ namespace MMIUnity.TargetEngine
         /// </summary>
         public virtual void Setup()
         {
+            var stopwatch = timeProfiler.StartWatch();
+
             //Manually update the phsyics
             Physics.autoSimulation = false;
 
@@ -169,6 +171,8 @@ namespace MMIUnity.TargetEngine
 
             //Wait and check if all connections are initialized
             this.StartCoroutine(CheckInitialization());
+
+            timeProfiler.StopWatch("SimulationController_Setup", stopwatch, frameNumber);
         }
 
 
@@ -201,6 +205,8 @@ namespace MMIUnity.TargetEngine
         /// <param name="time"></param>
         protected virtual void DoStep(float time)
         {
+            var stopwatch = timeProfiler.StartWatch();
+
             //#####################Save or restore the states of the co-simulations and environment#########################################
 
             //Save the entire state if desired
@@ -287,6 +293,8 @@ namespace MMIUnity.TargetEngine
 
             //Increment the frame number
             this.frameNumber++;
+
+            timeProfiler.StopWatch("SimulationController_DoStep", stopwatch, frameNumber);
         }
 
 
@@ -306,7 +314,7 @@ namespace MMIUnity.TargetEngine
         /// </summary>
         protected virtual void OnApplicationQuit()
         {
-
+            TimeProfiler.CloseLoggers();
         }
 
 
@@ -408,15 +416,21 @@ namespace MMIUnity.TargetEngine
         /// </summary>
         protected void PushScene()
         {
+            var stopwatch = timeProfiler.StartWatch();
+
             //Synchronizes the scene in before each update
             //To do parallelize in future
             for (int i = 0; i < this.Avatars.Count; i++)
             {
-                this.Avatars[i].MMUAccess.PushScene(false);
+                timeProfiler.WatchCodeSnippet("SimulationController_PushScene_" + Avatars[i].MAvatar.Name,
+                    () => this.Avatars[i].MMUAccess.PushScene(false),
+                    frameNumber);
             }
 
             //Clear the events since the current events have been already synchronized
             UnitySceneAccess.ClearChanges();
+
+            timeProfiler.StopWatch("SimulationController_Complete_PushScene", stopwatch, frameNumber);
         }
 
 
