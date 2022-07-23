@@ -7,6 +7,7 @@ using MMICoSimulation.Internal;
 using MMICoSimulation.Solvers;
 using MMICSharp.Access;
 using MMICSharp.Common;
+using MMICSharp.MMICSharp_Core.MMICore.Common.Tools;
 using MMIStandard;
 using MMIUnity.TargetEngine.Scene;
 using System.Collections.Generic;
@@ -113,6 +114,8 @@ namespace MMIUnity.TargetEngine
             };
 
             this.SortMMUPriority();
+
+            timeProfiler = TimeProfiler.GetProfiler("LocalCoSimulationLog", "CoSimulation");
         }
 
 

@@ -217,6 +217,7 @@ namespace MMIUnity.TargetEngine.Scene
                 this.remoteSceneAccessServer.Dispose();
             if (this.remoteSceneManipulationServer != null)
                 this.remoteSceneManipulationServer.Dispose();
+            MMICSharp.MMICSharp_Core.MMICore.Common.Tools.TimeProfiler.CloseLoggers();
         }
 
         /// <summary>

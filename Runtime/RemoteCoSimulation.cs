@@ -5,6 +5,7 @@
 using MMICoSimulation;
 using MMICSharp.Access;
 using MMICSharp.Common;
+using MMICSharp.MMICSharp_Core.MMICore.Common.Tools;
 using MMIStandard;
 using MMIUnity.TargetEngine.Scene;
 using System;
@@ -38,8 +39,7 @@ namespace MMIUnity.TargetEngine
         private readonly IServiceAccess serviceAccess;
 
         #endregion
-
-
+        
         /// <summary>
         /// Basic constructor
         /// </summary>
@@ -51,6 +51,7 @@ namespace MMIUnity.TargetEngine
             this.serviceAccess = serviceAccess;
 
             this.remoteCoSimulationMMU = coSimulationMMU;
+            timeProfiler = TimeProfiler.GetProfiler("RemoteCoSimulationLog", "CoSimulation");
         }
 
 
@@ -62,8 +63,11 @@ namespace MMIUnity.TargetEngine
         /// <returns></returns>
         public override MBoolResponse Initialize(MAvatarDescription avatarDescription, Dictionary<string, string> properties)
         {
-            //Initialize the CoSimulator
-            return this.remoteCoSimulationMMU.Initialize(avatarDescription, properties);
+            MBoolResponse result = null;
+            timeProfiler.WatchCodeSnippet("RemoteCoSimulation_Initialize",
+                () => result = this.remoteCoSimulationMMU.Initialize(avatarDescription, properties),
+                FrameNumber);
+            return result;
         }
 
 
@@ -74,7 +78,11 @@ namespace MMIUnity.TargetEngine
         /// <param name="avatarState"></param>
         public override MBoolResponse AssignInstruction(MInstruction instruction, MSimulationState avatarState)
         {
-            return this.remoteCoSimulationMMU.AssignInstruction(instruction, avatarState);
+            MBoolResponse result = null;
+            timeProfiler.WatchCodeSnippet("RemoteCoSimulation_AssignInstruction_" + instruction.ID,
+                () => result = this.remoteCoSimulationMMU.AssignInstruction(instruction, avatarState),
+                FrameNumber);
+            return result;
         }
 
         public override MBoolResponse Abort(string instructionId)
@@ -84,8 +92,11 @@ namespace MMIUnity.TargetEngine
 
         public override MSimulationResult DoStep(double time, MSimulationState avatarState)
         {
+            var stopwatchComplete = timeProfiler.StartWatch();
+            var stopwatch = timeProfiler.StartWatch();
             //Call the remote cosimulation
             MSimulationResult result = this.remoteCoSimulationMMU.DoStep(time, avatarState);
+            timeProfiler.StopWatch("RemoteCoSimulation_DoStep", stopwatch, FrameNumber);
 
             //Fire events
             if (result != null && result.Events != null && result.Events.Count > 0)
@@ -105,6 +116,9 @@ namespace MMIUnity.TargetEngine
             {
                 Debug.LogError("Problem assigning posture using remote co-simulation");
             }
+
+            timeProfiler.StopWatch("RemoteCoSimulation_Complete_DoStep", stopwatchComplete, FrameNumber);
+
             return result;
         }
 
