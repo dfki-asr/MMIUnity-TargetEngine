@@ -555,10 +555,11 @@ namespace MMIUnity.TargetEngine
             byte[] sceneSnapshot = this.SaveScene();
             sceneCheckpoints.Add(this.currentCheckPointID.ToString(), sceneSnapshot);
 
-            //Save the co-simulation state
-            foreach (MMICoSimulator coSimulator in this.Avatars.Select(s => s.CoSimulator))
+            for(int i = 0; i< this.Avatars.Count; i++)
             {
-                byte[] checkpoint = coSimulator.CreateCheckpoint();
+                 MMICoSimulator cosim = this.Avatars[i].CoSimulator;
+                string id = this.Avatars[i].MAvatar.ID;
+                byte[] checkpoint = cosim.CreateCheckpoint(id);
                 this.coSimulationCheckpoints.Add(checkpoint);
             }
         }
@@ -573,9 +574,10 @@ namespace MMIUnity.TargetEngine
             this.RestoreScene(sceneCheckpoints[this.currentCheckPointID.ToString()]);
 
             //Restore the co-simulation state
-            foreach (MMICoSimulator coSimulator in this.Avatars.Select(s => s.CoSimulator))
+
+            for (int i = 0; i < Avatars.Count; i++)
             {
-                coSimulator.RestoreCheckpoint(this.coSimulationCheckpoints[this.currentCheckPointID - 1]);
+                this.Avatars[i].CoSimulator.RestoreCheckpoint(this.coSimulationCheckpoints[this.currentCheckPointID - 1], this.Avatars[i].MAvatar.ID);
             }
         }
 
@@ -591,7 +593,7 @@ namespace MMIUnity.TargetEngine
 
             foreach (MMISceneObject sceneObject in this.GetComponentsInChildren<MMISceneObject>())
             {
-                sceneTransforms.Add(sceneObject.MSceneObject.ID, new MTransform(sceneObject.MSceneObject.ID, sceneObject.MSceneObject.Transform.Position, sceneObject.MSceneObject.Transform.Rotation));
+                sceneTransforms.Add(sceneObject.MSceneObject.ID, new MTransform(sceneObject.MSceneObject.ID, sceneObject.MSceneObject.Transform.Position, sceneObject.MSceneObject.Transform.Rotation, sceneObject.MSceneObject.Transform.Scale));
             }
 
             return Serialization.SerializeBinary(sceneTransforms);

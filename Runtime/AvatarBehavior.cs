@@ -48,7 +48,7 @@ namespace MMIUnity.TargetEngine
         {
             if (GUI.Button(new Rect(10, 10, 120, 50), "Idle"))
             {
-                MInstruction instruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle");
+                MInstruction instruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID);
                 //MInstruction instruction = new MInstruction(MInstructionFactory.GenerateID(), "MMUTest", "move");
                 MSimulationState simstate = new MSimulationState(this.avatar.GetPosture(), this.avatar.GetPosture());
 
@@ -59,12 +59,12 @@ namespace MMIUnity.TargetEngine
 
             if (GUI.Button(new Rect(140, 10, 120, 50), "Walk to"))
             {
-                MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk")
+                MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk", avatar.MAvatar.ID)
                 {
                     Properties = PropertiesCreator.Create("TargetID", UnitySceneAccess.Instance.GetSceneObjectByName("WalkTarget").ID)
                 };
 
-                MInstruction idleInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle")
+                MInstruction idleInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID)
                 {
                     //Start idle after walk has been finished
                     StartCondition = walkInstruction.ID + ":" + mmiConstants.MSimulationEvent_End //synchronization constraint similar to bml "id:End"  (bml original: <bml start="id:End"/>
@@ -135,17 +135,17 @@ namespace MMIUnity.TargetEngine
 
                     
 
-                    MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk")
+                    MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk", avatar.MAvatar.ID)
                     {
                         Properties = PropertiesCreator.Create("TargetName", "WalkTarget", "UseTargetOrientation", false.ToString())
                     };
-                    MInstruction idleConcurrentInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle")
+                    MInstruction idleConcurrentInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID)
                     {
                         //Start idle after walk has been finished
                         EndCondition = walkInstruction.ID + ":" + mmiConstants.MSimulationEvent_End //synchronization constraint similar to bml "id:End"  (bml original: <bml start="id:End"/>
                     };
 
-                    MInstruction idleInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle")
+                    MInstruction idleInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID)
                     {
                         //Start idle after walk has been finished
                         StartCondition = walkInstruction.ID + ":" + mmiConstants.MSimulationEvent_End //synchronization constraint similar to bml "id:End"  (bml original: <bml start="id:End"/>

@@ -326,7 +326,7 @@ namespace MMIUnity.TargetEngine.Scene
                 Name = this.name,
                 ID = id,
                 Properties = _dict,
-                Transform = new MTransform(id, new MVector3(0, 0, 0), new MQuaternion(0, 0, 0, 1))
+                Transform = new MTransform(id, new MVector3(0, 0, 0), new MQuaternion(0, 0, 0, 1), new MVector3(1,1,1))
                 //Constraints = this.Constraints; //they are loaded on start as they are read from file onEnable
             };
 
@@ -495,7 +495,7 @@ namespace MMIUnity.TargetEngine.Scene
             Debug.DrawLine(origin, zaxis, Color.blue);
         }
 
-        void DrawConstraintBox(Vector3 Position, Quaternion Rotation, MMIStandard.MInterval3 Limits)
+        void DrawConstraintBox(Vector3 Position, Quaternion Rotation, MInterval3 Limits)
         {
             var colortop = Color.red;
             var color = Color.green;
@@ -735,7 +735,7 @@ namespace MMIUnity.TargetEngine.Scene
                     for (int j=0; j<this.Constraints[i].PathConstraint.PolygonPoints.Count; j++)
                         if (this.Constraints[i].PathConstraint.PolygonPoints[j].ParentToConstraint.ID==ConstraintName)
                             return this.Constraints[i].PathConstraint.PolygonPoints[j].ParentToConstraint;
-            return new MTransform("//notfound//",new MVector3(),new MQuaternion());
+            return new MTransform("//notfound//",new MVector3(),new MQuaternion(), new MVector3());
         }
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace MMIUnity.TargetEngine.Scene
         public virtual void Synchronize()
         {
             if (this.MSceneObject.Transform==null)
-                this.MSceneObject.Transform = new MTransform(this.MSceneObject.ID, new MVector3(0, 0, 0), new MQuaternion(0, 0, 0, 1));
+                this.MSceneObject.Transform = new MTransform(this.MSceneObject.ID, new MVector3(0, 0, 0), new MQuaternion(0, 0, 0, 1), new MVector3(1,1,1));
             this.UpdateTransform(false);
 
             this.MSceneObject.Constraints = this.Constraints;
@@ -921,7 +921,7 @@ namespace MMIUnity.TargetEngine.Scene
             try
             {
                 Constraints = null;
-                var constrs = Serialization.FromJsonString<List<MMIStandard.MConstraint>>(File.ReadAllText(Dir + ConstraintsFile));
+                var constrs = Serialization.FromJsonString<List<MConstraint>>(File.ReadAllText(Dir + ConstraintsFile));
                 Constraints = constrs;
             }
             catch

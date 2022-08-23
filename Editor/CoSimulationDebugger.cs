@@ -558,7 +558,7 @@ namespace MMIUnity.TargetEngine.Editor
             {
                 try
                 {
-                    Dictionary<string, string> result = this.SourceAvatar.CoSimulator.ExecuteFunction("GetRecord", new Dictionary<string, string>());
+                    Dictionary<string, string> result = this.SourceAvatar.CoSimulator.ExecuteFunction("GetRecord",this.SourceAvatar.MAvatar.ID , new Dictionary<string, string>());
 
                     if (result.ContainsKey("Record"))
                     {

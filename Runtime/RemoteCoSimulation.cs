@@ -108,21 +108,21 @@ namespace MMIUnity.TargetEngine
             return result;
         }
 
-        public override byte[] CreateCheckpoint()
+        public override byte[] CreateCheckpoint(string avatarID)
         {
-            return this.remoteCoSimulationMMU.CreateCheckpoint();
+            return this.remoteCoSimulationMMU.CreateCheckpoint(avatarID);
         }
 
 
 
-        public override MBoolResponse RestoreCheckpoint(byte[] data)
+        public override MBoolResponse RestoreCheckpoint(byte[] data, string avatarID)
         {
-            return this.remoteCoSimulationMMU.RestoreCheckpoint(data);
+            return this.remoteCoSimulationMMU.RestoreCheckpoint(data, avatarID);
         }
 
-        public override Dictionary<string, string> ExecuteFunction(string name, Dictionary<string, string> parameters)
+        public override Dictionary<string, string> ExecuteFunction(string name, string avatarID, Dictionary<string, string> parameters)
         {
-            return this.remoteCoSimulationMMU.ExecuteFunction(name, parameters);
+            return this.remoteCoSimulationMMU.ExecuteFunction(name,avatarID, parameters);
         }
 
     }

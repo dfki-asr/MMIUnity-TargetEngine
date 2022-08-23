@@ -514,8 +514,8 @@ public class ObjectSpawner : MonoBehaviour
             Mathf.Lerp((float)geomConstraint.RotationConstraint.Limits.Y.Min, (float)geomConstraint.RotationConstraint.Limits.Y.Max, UnityEngine.Random.value),
             Mathf.Lerp((float)geomConstraint.RotationConstraint.Limits.Z.Min, (float)geomConstraint.RotationConstraint.Limits.Z.Max, UnityEngine.Random.value)));
         */
-
-        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion());
+        //POTENTIAL ERROR: I am not sure if we need to calculate a Scale here or take the normal vector.
+        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion(), new MVector3(1,1,1));
     }
 
     /// <summary>
@@ -541,8 +541,8 @@ public class ObjectSpawner : MonoBehaviour
             Mathf.Lerp((float)geomConstraint.RotationConstraint.Limits.Y.Min, (float)geomConstraint.RotationConstraint.Limits.Y.Max, UnityEngine.Random.value),
             Mathf.Lerp((float)geomConstraint.RotationConstraint.Limits.Z.Min, (float)geomConstraint.RotationConstraint.Limits.Z.Max, UnityEngine.Random.value)));
 
-
-        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion());
+        //POTENTIAL ERROR: I am not sure, if we can use a normal Vector for the scale or use 1/1/1
+        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion(), new MVector3(1,1,1));
     }
 
     /// <summary>
@@ -573,7 +573,8 @@ public class ObjectSpawner : MonoBehaviour
             Mathf.Lerp((float)geomConstraint.RotationConstraint.Limits.Z.Min, (float)geomConstraint.RotationConstraint.Limits.Z.Max, UnityEngine.Random.value)));
 
 
-        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion());
+        //POTENTIAL ERROR: I am not sure, if we can use a normal Vector for the scale or use 1/1/1
+        return new MTransform(System.Guid.NewGuid().ToString(), sampledPosition.ToMVector3(), sampledRotation.ToMQuaternion(), new MVector3(1,1,1));
     }
 
 
