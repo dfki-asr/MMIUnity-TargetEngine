@@ -1005,12 +1005,12 @@ namespace MMIUnity.TargetEngine.Scene
         private void SetupTransform()
         {
             //Create the transform
-            this.MSceneObject.Transform = new MTransform()
-            {
-                ID = this.MSceneObject.ID,
-                Position = this.transform.position.ToMVector3(),
-                Rotation = this.transform.rotation.ToMQuaternion()
-            };
+            this.MSceneObject.Transform = new MTransform(
+                this.MSceneObject.ID, 
+                this.transform.position.ToMVector3(), 
+                this.transform.rotation.ToMQuaternion(), 
+                this.transform.localScale.ToMVector3()
+            );
 
             //Set the parent if available
             if (this.transform.parent != null && this.transform.GetComponentsInParent<MMISceneObject>().Length > 1)
