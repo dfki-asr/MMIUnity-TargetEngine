@@ -1,7 +1,14 @@
 {
     "name": "dfki.mmiunity-targetengine.Editor",
-    "references": ["dfki.mmiunity-core.Editor", "dfki.mmiunity-core", "dfki.mmiunity-targetengine"],
-    "includePlatforms": [],
+    "rootNamespace": "",
+    "references": [
+        "dfki.mmiunity-core.Editor",
+        "dfki.mmiunity-core",
+        "dfki.mmiunity-targetengine"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

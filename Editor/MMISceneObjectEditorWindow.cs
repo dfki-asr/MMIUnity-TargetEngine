@@ -16,6 +16,27 @@ namespace MMIUnity.TargetEngine.Editor
     [CustomEditor(typeof(MMISceneObject))]
     public class MMISceneObjectEditorWindow : UnityEditor.Editor
     {
+
+        private static void AddModuleIfNotExisting<T>(GameObject obj) where T : UnityEngine.Component
+        {
+            if(obj.GetComponent<T>() == null)
+            {
+                obj.AddComponent<T>();
+            }
+        }
+
+
+        [MenuItem("GameObject/MMI/MakeSceneRoot", false, 0)]
+        static void MakeSceneRoot()
+        {
+            var gobj = Selection.activeGameObject;
+            AddModuleIfNotExisting<MMISettings>(gobj);
+            AddModuleIfNotExisting<UnitySceneAccess>(gobj);
+            AddModuleIfNotExisting<SimulationController>(gobj);
+            AddModuleIfNotExisting<MainThreadDispatcher>(gobj);
+        }
+
+
         // Add a menu item named for creating walk target object directly
         [MenuItem("GameObject/MMI/New Walk target", false, 0)]
         static void AddMMISceneObjectsWalkTarget()

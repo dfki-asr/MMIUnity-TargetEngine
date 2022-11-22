@@ -33,6 +33,8 @@ namespace MMIUnity.TargetEngine
             }
         }
 
+        public float velocity = 1.2f;
+
 
         // Use this for initialization
         protected virtual void Start()
@@ -61,7 +63,7 @@ namespace MMIUnity.TargetEngine
             {
                 MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk", avatar.MAvatar.ID)
                 {
-                    Properties = PropertiesCreator.Create("TargetID", UnitySceneAccess.Instance.GetSceneObjectByName("WalkTarget").ID)
+                    Properties = PropertiesCreator.Create("TargetID", UnitySceneAccess.Instance.GetSceneObjectByName("WalkTarget").ID, "Velocity", velocity.ToString("0.00"))
                 };
 
                 MInstruction idleInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID)
@@ -137,7 +139,7 @@ namespace MMIUnity.TargetEngine
 
                     MInstruction walkInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Walk", "Locomotion/Walk", avatar.MAvatar.ID)
                     {
-                        Properties = PropertiesCreator.Create("TargetName", "WalkTarget", "UseTargetOrientation", false.ToString())
+                        Properties = PropertiesCreator.Create("TargetName", "WalkTarget", "UseTargetOrientation", false.ToString(), "Velocity", velocity.ToString("0.00"))
                     };
                     MInstruction idleConcurrentInstruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID)
                     {
@@ -152,13 +154,13 @@ namespace MMIUnity.TargetEngine
                     };
 
                     //Abort all current tasks
-                    this.CoSimulator.Abort();
+                    //this.CoSimulator.Abort();
 
                     MSimulationState currentState = new MSimulationState() { Initial = this.avatar.GetPosture(), Current = this.avatar.GetPosture() };
 
                     //Assign walk and idle instruction
                     this.CoSimulator.AssignInstruction(walkInstruction, currentState);
-                    this.CoSimulator.AssignInstruction(idleConcurrentInstruction, currentState);
+                    //this.CoSimulator.AssignInstruction(idleConcurrentInstruction, currentState);
                     this.CoSimulator.AssignInstruction(idleInstruction, currentState);
 
                 }
