@@ -295,6 +295,7 @@ namespace MMIUnity.TargetEngine.Scene
 
             //Apply the transform manipulations to update the avatar location
             this.ApplyTransformManipulations();
+            this.MMUAccess.PushScene(true);
         }
 
         /// <summary>
