@@ -10,13 +10,15 @@ using MMIStandard;
 using MMIUnity.TargetEngine;
 using MMIUnity.TargetEngine.Scene;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace MMIUnity.TargetEngine.Editor
 {
 
-
+#if UNITY_EDITOR
     /// <summary>
     /// An editor window for the co-simulation debugger.
     /// This window provides further functionality and visualizes the hierachy.
@@ -435,7 +437,7 @@ namespace MMIUnity.TargetEngine.Editor
 
     }
 
-
+#endif
     /// <summary>
     /// Class for debugging the CoSimulation
     /// </summary>
@@ -495,7 +497,7 @@ namespace MMIUnity.TargetEngine.Editor
             {
                 this.SourceAvatar.CoSimulator.Recording = true;
             }
-
+#if UNITY_EDITOR
             if (record != null)
             {
                 if (GUI.Button(new Rect(sliderOffsetX + 220, Screen.height - 45, 100, 40), "Save"))
@@ -550,7 +552,7 @@ namespace MMIUnity.TargetEngine.Editor
                 {
                 }
             }
-
+#endif
 
 
             ///Load remotely (if a remote co-simulation is used) -> only display if remote co-simulation is active

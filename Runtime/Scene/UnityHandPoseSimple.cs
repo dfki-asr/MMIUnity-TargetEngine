@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Thrift.Protocol;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace MMIUnity.TargetEngine.Scene
@@ -155,7 +157,7 @@ namespace MMIUnity.TargetEngine.Scene
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(UnityHandPoseSimple))]
-    public class UnityHandPoseSimpleEditor : Editor
+    public class UnityHandPoseSimpleEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
