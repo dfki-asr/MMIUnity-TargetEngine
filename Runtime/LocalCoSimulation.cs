@@ -141,6 +141,7 @@ namespace MMIUnity.TargetEngine
         /// <param name="result"></param>
         public override void PostComputeFrame(MSimulationResult result)
         {
+            base.PostComputeFrame(result);
             if (!this.ComputeAsync)
             {
                 this.avatar.AssignPostureValues(result.Posture);
