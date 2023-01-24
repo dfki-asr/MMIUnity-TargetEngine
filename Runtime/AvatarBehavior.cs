@@ -48,6 +48,7 @@ namespace MMIUnity.TargetEngine
         /// </summary>
         protected virtual void GUIBehaviorInput()
         {
+            /*
             if (GUI.Button(new Rect(10, 10, 120, 50), "Idle"))
             {
                 MInstruction instruction = new MInstruction(MInstructionFactory.GenerateID(), "Idle", "Pose/Idle", avatar.MAvatar.ID);
@@ -82,10 +83,11 @@ namespace MMIUnity.TargetEngine
                 this.CoSimulator.AssignInstruction(idleInstruction, currentState);
                 this.CoSimulator.MSimulationEventHandler += this.CoSimulator_MSimulationEventHandler;
             }
+                    */
 
         }
 
-
+        /*
         /// <summary>
         /// Callback for the co-simulation event handler
         /// </summary>
@@ -95,27 +97,26 @@ namespace MMIUnity.TargetEngine
         {
             Debug.Log(e.Reference + " " + e.Name + " " + e.Type);
         }
-
-
+        */
+        
         /// <summary>
         /// Basic on gui routine which is executed for each frame on the main thread
         /// </summary>
         protected void OnGUI()
         {
             //Skip if no co-simulation or MMU access of avatar not initialized
-            if (this.CoSimulator == null || !this.avatar.MMUAccess.IsInitialized)
+            if (this.CoSimulator == null || this.avatar == null || this.avatar.MMUAccess == null || !this.avatar.MMUAccess.IsInitialized)
                 return;
 
             //Call for each frame
             this.GUIBehaviorInput();
-
         }
-
         /// <summary>
         /// Basic update routine
         /// </summary>
         void Update()
         {
+            /*
             ///Handle the walk command on mouse click
             if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0))
             {
@@ -165,12 +166,12 @@ namespace MMIUnity.TargetEngine
 
                 }
 
-            }
+            }*/
 
-        }
     }
+}
 
-    public static class CoSimExtensions
+public static class CoSimExtensions
     {
         public static void AddAction(this MInstruction instruction, string topic, string action, string instructionID)
         {
