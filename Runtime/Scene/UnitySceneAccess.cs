@@ -447,6 +447,33 @@ namespace MMIUnity.TargetEngine.Scene
                     }
                 }
 
+                // Apply Attachements
+                if(sceneManipulation.Attachments != null)
+                {
+                    foreach(MAttachmentManipulation attachmentManipulation in sceneManipulation.Attachments)
+                    {
+                        if(this.sceneObjectsByID.ContainsKey(attachmentManipulation.Parent) && this.sceneObjectsByID.ContainsKey(attachmentManipulation.Child))
+                        {
+                            var parent = this.GetSceneObjectByID(attachmentManipulation.Parent);
+                            var child = this.GetSceneObjectByID(attachmentManipulation.Child);
+                            int id = -1;
+                            for (int i = 0; i < parent.Attachments.Count; i++)
+                            {
+                                if (parent.Attachments[i].Child == attachmentManipulation.Child)
+                                {
+                                    id = i;
+                                    break;
+                                }
+                            }
+                            if (id > -1) { parent.Attachments.RemoveAt(id); }
+                            if (attachmentManipulation.AddRemove)
+                            {
+                                parent.Attachments.Add(new MAttachment(parent.ID, child.ID));
+                            }
+                        }
+                    }
+                }
+
                 //Incorporate the phsysics interactions
                 if (sceneManipulation.PhysicsInteractions != null)
                 {
@@ -1143,7 +1170,8 @@ namespace MMIUnity.TargetEngine.Scene
 
             foreach (MSceneObject sceneObject in this.GetSceneObjects())
             {
-                attachments.AddRange(sceneObject.Attachments);
+                if(sceneObject.Attachments != null)
+                    attachments.AddRange(sceneObject.Attachments);
             }
 
             return attachments;
