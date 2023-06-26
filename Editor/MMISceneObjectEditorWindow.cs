@@ -165,6 +165,7 @@ namespace MMIUnity.TargetEngine.Editor
         SerializedProperty m_StationRef;
         SerializedProperty m_GroupRef;
 
+        SerializedProperty m_constraintPath;
         // Type related Fields
         SerializedProperty m_Type;
         SerializedProperty m_InitialLocation;
@@ -192,6 +193,7 @@ namespace MMIUnity.TargetEngine.Editor
             m_GroupRef = serializedObject.FindProperty("GroupRef");
             //m_Constraint = serializedObject.FindProperty("Constraints");
 
+            m_constraintPath = serializedObject.FindProperty("ConstraintsFile");
             m_toolType = serializedObject.FindProperty("Tool");
             // Type related Fields
             m_Type = serializedObject.FindProperty("Type");
@@ -595,6 +597,8 @@ namespace MMIUnity.TargetEngine.Editor
             Handles.DrawLine(new Vector2(rect.x, rect.y), new Vector2(rect.width + 13, rect.y));
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(m_constraintPath, new GUIContent("Constraint Path"));
 
             // Type related input fields
             EditorGUILayout.PropertyField(m_Type, new GUIContent("Type"));
