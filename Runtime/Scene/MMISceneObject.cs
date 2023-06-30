@@ -928,6 +928,33 @@ namespace MMIUnity.TargetEngine.Scene
             {
                 Debug.LogWarning("Loading constraints error: Wrong file format");
             }
+
+            bool _rootExists = false;
+            List<MConstraint> cleanList = new List<MConstraint>();
+            foreach(MConstraint c in this.Constraints)
+            {
+                if(c.ID == "ROOT")
+                {
+                    _rootExists = true;
+                } if(c.ID == null)
+                {
+                    cleanList.Add(c);
+                }
+                if(_rootExists && c.ID == "ROOT")
+                {
+                    cleanList.Add(c);
+                }
+            }
+            foreach(MConstraint c in cleanList) { this.Constraints.Remove(c); }
+            if(!_rootExists)
+            {
+                // Add Auto-Root constraint
+                var rootC = new MConstraint("ROOT")
+                {
+                    GeometryConstraint = MGeometryConstraintExtensions.Identity(this.MSceneObject.ID)
+                };
+                this.Constraints.Add(rootC);
+            }
         }
 
         /// <summary>

@@ -36,6 +36,16 @@ namespace MMIUnity.TargetEngine.Editor
             AddModuleIfNotExisting<MainThreadDispatcher>(gobj);
         }
 
+        [MenuItem("GameObject/MMI/MakeMosimAvatar", false, 0)]
+        static void MakeMosimAvatar()
+        {
+            var gobj = Selection.activeGameObject;
+            AddModuleIfNotExisting<MMIAvatar>(gobj);
+            var avatar = gobj.GetComponent<MMIAvatar>();
+            avatar.RootTransform = gobj.transform;
+            avatar.Pelvis = gobj.transform.GetChildRecursiveByName("pelvis");
+        }
+
 
         // Add a menu item named for creating walk target object directly
         [MenuItem("GameObject/MMI/New Walk target", false, 0)]
@@ -66,6 +76,15 @@ namespace MMIUnity.TargetEngine.Editor
             var newMMISceneObject = newMarker.AddComponent<MMISceneObject>();
             newMMISceneObject.Type = MMISceneObject.Types.FinalLocation;
         }
+
+        // Add a menu item named for adding MMISceneObjects recursively to all children nodes
+        [MenuItem("GameObject/MMI/Add MMISceneObject", false, 0)]
+        static void AddMMISceneObject()
+        {
+            var gobj = Selection.activeGameObject;
+            gobj.AddComponent<MMISceneObject>();
+        }
+
 
         // Add a menu item named for adding MMISceneObjects recursively to all children nodes
         [MenuItem("GameObject/MMI/Add MMISceneObjects (recursive)", false, 0)]
