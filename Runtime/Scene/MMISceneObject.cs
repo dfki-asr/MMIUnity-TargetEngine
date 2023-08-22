@@ -936,10 +936,18 @@ namespace MMIUnity.TargetEngine.Scene
                 if(c.ID == "ROOT")
                 {
                     _rootExists = true;
-                } if(c.ID == null)
+                } 
+
+                if(c.GeometryConstraint != null)
+                {
+                    c.GeometryConstraint.ParentObjectID = this.MSceneObject.ID;
+                }
+                
+                if(c.ID == null)
                 {
                     cleanList.Add(c);
                 }
+                
                 if(_rootExists && c.ID == "ROOT")
                 {
                     cleanList.Add(c);
@@ -953,6 +961,7 @@ namespace MMIUnity.TargetEngine.Scene
                 {
                     GeometryConstraint = MGeometryConstraintExtensions.Identity(this.MSceneObject.ID)
                 };
+                rootC.GeometryConstraint.ParentObjectID = this.MSceneObject.ID;
                 this.Constraints.Add(rootC);
             }
         }
