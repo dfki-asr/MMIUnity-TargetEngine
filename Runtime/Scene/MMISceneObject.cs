@@ -349,10 +349,12 @@ namespace MMIUnity.TargetEngine.Scene
         // Use this for initialization
         protected virtual void Start()
         {
-            
-
             if (!Application.isPlaying)
                 return;
+
+            // Add a dummy root constraint, if no root constraint is available. 
+            AddRootConstraintIfNotAvailable();
+            
             //Setup the transforms of the MSceneObject
             this.SetupTransform();
 
@@ -911,9 +913,33 @@ namespace MMIUnity.TargetEngine.Scene
             Debug.Log("Adding objects to library is not implemented yet.");
         }
 
-        /// <summary>
-        /// Method for loading constraints from file assigned to the object
-        /// </summary>
+        private void AddRootConstraintIfNotAvailable()
+        {
+            bool _rootExists = false;
+            foreach (MConstraint c in this.Constraints)
+            {
+                if (c.ID == "ROOT")
+                {
+                    _rootExists = true;
+                }
+
+            }
+
+            if (!_rootExists)
+            {
+                // Add Auto-Root constraint
+                var rootC = new MConstraint("ROOT")
+                {
+                    GeometryConstraint = MGeometryConstraintExtensions.Identity(this.MSceneObject.ID)
+                };
+                rootC.GeometryConstraint.ParentObjectID = this.MSceneObject.ID;
+                this.Constraints.Add(rootC);
+            }
+        }
+
+            /// <summary>
+            /// Method for loading constraints from file assigned to the object
+            /// </summary>
         public void LoadConstraints()
         {
             string Dir = Application.dataPath + "/Constraints/";
@@ -929,14 +955,9 @@ namespace MMIUnity.TargetEngine.Scene
                 Debug.LogWarning("Loading constraints error: Wrong file format");
             }
 
-            bool _rootExists = false;
             List<MConstraint> cleanList = new List<MConstraint>();
             foreach(MConstraint c in this.Constraints)
             {
-                if(c.ID == "ROOT")
-                {
-                    _rootExists = true;
-                } 
 
                 if(c.GeometryConstraint != null)
                 {
@@ -947,23 +968,8 @@ namespace MMIUnity.TargetEngine.Scene
                 {
                     cleanList.Add(c);
                 }
-                
-                if(_rootExists && c.ID == "ROOT")
-                {
-                    cleanList.Add(c);
-                }
             }
             foreach(MConstraint c in cleanList) { this.Constraints.Remove(c); }
-            if(!_rootExists)
-            {
-                // Add Auto-Root constraint
-                var rootC = new MConstraint("ROOT")
-                {
-                    GeometryConstraint = MGeometryConstraintExtensions.Identity(this.MSceneObject.ID)
-                };
-                rootC.GeometryConstraint.ParentObjectID = this.MSceneObject.ID;
-                this.Constraints.Add(rootC);
-            }
         }
 
         /// <summary>
