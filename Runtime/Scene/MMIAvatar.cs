@@ -192,6 +192,9 @@ namespace MMIUnity.TargetEngine.Scene
             if (!Application.isPlaying) return;
             base.Start();
 
+            MMICSharp.Logger.Instance = new MMIAdapterUnity.UnityLogger(true);
+            MMICSharp.Logger.Instance.Level = MMICSharp.Log_level.L_DEBUG;
+
             //Assign the behavior
             this.Behavior = this.GetComponent<AvatarBehavior>();
 
