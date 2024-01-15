@@ -94,8 +94,10 @@ namespace MMIUnity.TargetEngine.Scene
         //task editor dependencies
         [HideInInspector]
         public ulong TaskEditorLocalID = 0;
-        [HideInInspector]
+        //[HideInInspector]
         public ulong TaskEditorID = 0;
+        [HideInInspector]
+        public ulong TaskEditorProject = 0;
         //end of task editor dependencies
         [HideInInspector] //used in edit mode to select which constraint attached to the object is visualized
         public int selectedConstraint = -1;
@@ -479,6 +481,31 @@ namespace MMIUnity.TargetEngine.Scene
             return true;
         }
         */
+
+        public bool LoadConstraintsFromFile(string filename)
+        {
+            try
+            {
+                var constrs = Serialization.FromJsonString<List<MConstraint>>(File.ReadAllText(filename));
+                for (int i = 0; i < constrs.Count; i++) //fix for missing default posture values that crashes thrift if not present
+                    if (constrs[i].__isset.PostureConstraint)
+                        if (constrs[i].PostureConstraint.Posture == null)
+                            constrs[i].PostureConstraint.Posture = new MAvatarPostureValues("", new List<double>());
+                        else
+                            if (constrs[i].PostureConstraint.Posture.PostureData == null)
+                            constrs[i].PostureConstraint.Posture.PostureData = new List<double>();
+                Constraints = constrs;
+                SaveConstraints();
+                if (!Application.isPlaying)
+                    UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+                return true;
+            }
+            catch
+            {
+                Debug.LogWarning("Loading constraints error: Wrong file format");
+                return false;
+            }
+        }
 
         void DrawInitialLocationMarker(TConstraintIndex index)
         {
@@ -998,6 +1025,11 @@ namespace MMIUnity.TargetEngine.Scene
                     ConstraintsFile = ConstraintsFile + ".json";
             }
             System.IO.File.WriteAllText(Dir + ConstraintsFile, Serialization.ToJsonString(Constraints));
+        }
+
+        public string ConstraintFilePath()
+        {
+            return Application.dataPath + "/Constraints/"+ConstraintsFile;
         }
 
         /// <summary>
