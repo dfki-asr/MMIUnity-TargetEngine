@@ -84,6 +84,8 @@ namespace MMIUnity.TargetEngine
                 {"Object/Carry",2},
                 {"Object/Move",2},
                 {"Object/Turn",2},
+                {"Object/Retrieve",2 },
+                {"Object/Place",2 },
 
                 {"release",2},
                 {"carry",2},
@@ -98,6 +100,7 @@ namespace MMIUnity.TargetEngine
                 {"Pose/MoveFingers",3},
                 {"moveFingers",3},
                 {"grasp",3},
+                {"Object/Grasp", 3 },
 
                 //Level 4
                 {"Pose/Gaze",4},
