@@ -496,8 +496,10 @@ namespace MMIUnity.TargetEngine.Scene
                             constrs[i].PostureConstraint.Posture.PostureData = new List<double>();
                 Constraints = constrs;
                 SaveConstraints();
+#if UNITY_EDITOR
                 if (!Application.isPlaying)
                     UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+#endif
                 return true;
             }
             catch
